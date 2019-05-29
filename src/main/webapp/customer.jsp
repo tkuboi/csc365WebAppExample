@@ -10,14 +10,34 @@
 <html>
 <head>
     <title>Customers</title>
+    <style>
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+
+      tr:nth-child(even) {
+        background-color: #dddddd;
+      }
+    </style>
 </head>
-Customers
-message: ${message}
+<body>
+Message:
+<p>${message}</p>
 <table>
+    <thead>Customers</thead>
+    <tr><th>id</th><th>name</th></tr>
 <c:forEach items="${customers}" var="customer">
     <tr>
-        <td>ID: ${customer.id}</td>
-        <td>Name: ${customer.name}</td>
+        <td>${customer.id}</td>
+        <td>${customer.name}</td>
     </tr>
 </c:forEach>
 </table>

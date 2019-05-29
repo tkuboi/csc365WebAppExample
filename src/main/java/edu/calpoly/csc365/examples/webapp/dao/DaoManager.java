@@ -3,6 +3,7 @@ package edu.calpoly.csc365.examples.webapp.dao;
 import edu.calpoly.csc365.examples.webapp.entity.Customer;
 
 import javax.naming.NamingException;
+import javax.sql.DataSource;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -11,38 +12,25 @@ import java.util.Properties;
 
 public class DaoManager {
 
-  private String driver = null;
-  private String url = null;
-  private String user = null;
-  private String pass = null;
+  protected DataSource dataSource = null;
+  protected Connection conn = null;
 
-  //Private
-  private Connection conn;
-  private static DaoManager instance = null;
-
-  private DaoManager() throws Exception {
-    try
-    {
-      this.conn = ConnectionFactory.getConnection();
-    }
-    catch(Exception e) { throw e; }
+  public DaoManager(DataSource dataSource) {
+    this.dataSource = dataSource;
   }
 
-  public static DaoManager getInstance() throws Exception {
-    if (DaoManager.instance == null) {
-      DaoManager.instance = new DaoManager();
+  public Connection getConnection() throws SQLException {
+    if (this.conn == null) {
+      this.conn = this.dataSource.getConnection();
     }
-    return DaoManager.instance;
-  }
-
-  public Connection getConnection() {
     return this.conn;
   }
 
-  public void open() throws SQLException, NamingException {
-    if(this.conn == null || this.conn.isClosed()) {
-      this.conn = ConnectionFactory.getConnection();
+  public Connection getTransConnection() throws SQLException {
+    if (this.conn == null) {
+      this.getConnection().setAutoCommit(false);
     }
+    return this.conn;
   }
 
   public void close() throws SQLException {
@@ -76,8 +64,29 @@ public class DaoManager {
     return null;
   }
 
-  public Dao<Customer> getCustomerDao() {
-    return new CustomerDaoImpl(this.conn);
+  public Object executeAndClose(DaoCommand command){
+    try{
+      return command.execute(this);
+    } finally {
+      try {
+        this.getConnection().close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  public Object transactionAndClose(final DaoCommand command){
+    return executeAndClose(new DaoCommand() {
+      @Override
+      public Object execute(DaoManager daoManager) {
+        return daoManager.transaction(command);
+      }
+    });
+  }
+
+  public Dao<Customer> getCustomerDao() throws SQLException {
+    return new CustomerDaoImpl(this.getConnection());
   }
 
 }
