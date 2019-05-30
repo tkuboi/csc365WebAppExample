@@ -8,7 +8,7 @@
          version="2.5">
   <display-name>Archetype Created Web Application</display-name>
 
-  <servlet>
+  <!--<servlet>
       <servlet-name>CustomerServlet</servlet-name>
       <servlet-class>edu.calpoly.csc365.examples.webapp.controller.CustomerServlet</servlet-class>
   </servlet>
@@ -16,7 +16,7 @@
   <servlet-mapping>
       <servlet-name>CustomerServlet</servlet-name>
       <url-pattern>/customer</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping>-->
 
   <welcome-file-list>
       <welcome-file>customer</welcome-file>

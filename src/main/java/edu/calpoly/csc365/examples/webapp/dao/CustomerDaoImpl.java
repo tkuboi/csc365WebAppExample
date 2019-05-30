@@ -18,7 +18,32 @@ public class CustomerDaoImpl implements Dao<Customer> {
 
   @Override
   public Customer getById(int id) {
-    return null;
+    Customer customer = null;
+    PreparedStatement preparedStatement = null;
+    ResultSet resultSet = null;
+    try {
+      preparedStatement = this.conn.prepareStatement("SELECT * FROM Customer WHERE id=?");
+      preparedStatement.setInt(1, id);
+      resultSet = preparedStatement.executeQuery();
+      Set<Customer> customers = unpackResultSet(resultSet);
+      customer = (Customer)customers.toArray()[0];
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } finally {
+      try {
+        if (resultSet != null)
+          resultSet.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+      try {
+        if (preparedStatement != null)
+          preparedStatement.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    return customer;
   }
 
   @Override
@@ -56,7 +81,20 @@ public class CustomerDaoImpl implements Dao<Customer> {
 
   @Override
   public Boolean update(Customer obj) {
-    return null;
+    try {
+      PreparedStatement preparedStatement = this.conn.prepareStatement(
+        "UPDATE Customer SET ssn=?, name=?, address=?, phone=? WHERE id=?");
+      preparedStatement.setInt(1, obj.getSsn());
+      preparedStatement.setString(2, obj.getName());
+      preparedStatement.setString(3, obj.getAddress());
+      preparedStatement.setString(4, obj.getPhone());
+      preparedStatement.setInt(5, obj.getId());
+      preparedStatement.execute();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+    return true;
   }
 
   @Override

@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.*;
 
-@WebServlet(name = "CustomerServlet")
+@WebServlet(name = "CustomerServlet", urlPatterns = "/customer")
 public class CustomerServlet extends HttpServlet {
 
   private DaoManager dm;
