@@ -1,5 +1,9 @@
 # csc365WebAppExample
 
+### To Set up this example
+1. clone this repo, or download it as a zip file and extract it on your computer.
+2. Open the root directory of this repo with your favorite IDE. With IntelliJ, for example, just click "open" on the main menu and select the directory.
+
 ### To Configure Datasource with Tomcat
 1. Create META-INF directory under webapp directory
 2. Create context.xml file in the META-INF directory
@@ -40,3 +44,10 @@
 4. Change xyz to an appropriate database name
 5. Change xxx and yyy to appropriate user and password for the database
 6. Change localhost to an appropriate server url
+
+### To Run this example locally on your computer
+1. In IntelliJ, for example, set a RUN configuration by clicking "Edit Configurations" under the Run menu.
+2. Create a Maven build and put the following in the Command Line text box:
+    clean compile war:war tomcat7:run
+    
+3. Run the project with the above configuration.
