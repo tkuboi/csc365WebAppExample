@@ -6,6 +6,7 @@ import edu.calpoly.csc365.examples.webapp.dao.Dao;
 import edu.calpoly.csc365.examples.webapp.dao.DaoManager;
 import edu.calpoly.csc365.examples.webapp.entity.Customer;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
