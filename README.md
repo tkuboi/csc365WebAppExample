@@ -119,6 +119,7 @@ CREATE TABLE `Payment` (
 ### To Run this example locally on your computer
 1. In IntelliJ, for example, set a RUN configuration by clicking "Edit Configurations" under the Run menu.
 2. Create a Maven build and put the following in the Command Line text box:
-    clean compile war:war tomcat7:run
-    
+```
+clean compile war:war tomcat7:run
+``` 
 3. Run the project with the above configuration.
