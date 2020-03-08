@@ -24,7 +24,7 @@ public class CustomerEditServlet extends HttpServlet {
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    int ssn = Integer.parseInt(request.getParameter("ssn"));
+    String ssn = request.getParameter("ssn");
     int id = Integer.parseInt(request.getParameter("id"));
     String name = request.getParameter("name");
     String address = request.getParameter("address");

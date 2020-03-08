@@ -2,7 +2,7 @@ package edu.calpoly.csc365.examples.webapp.entity;
 
 public class Customer {
   private Integer id;
-  private Integer ssn;
+  private String ssn;
   private String name;
   private String address;
   private String phone;
@@ -15,7 +15,7 @@ public class Customer {
     this.phone = null;
   }
 
-  public Customer(Integer ssn, String name, String address, String phone) {
+  public Customer(String ssn, String name, String address, String phone) {
     this.id = null;
     this.ssn = ssn;
     this.name = name;
@@ -23,7 +23,7 @@ public class Customer {
     this.phone = phone;
   }
 
-  public Customer(Integer id, Integer ssn, String name, String address, String phone) {
+  public Customer(Integer id, String ssn, String name, String address, String phone) {
     this.id = id;
     this.ssn = ssn;
     this.name = name;
@@ -39,11 +39,11 @@ public class Customer {
     this.id = id;
   }
 
-  public Integer getSsn() {
+  public String getSsn() {
     return ssn;
   }
 
-  public void setSsn(Integer ssn) {
+  public void setSsn(String ssn) {
     this.ssn = ssn;
   }
 
@@ -73,7 +73,7 @@ public class Customer {
 
   @Override
   public String toString() {
-    return "id: " + id.toString() + ", ssn: " + ssn.toString() + ", name: " + name
+    return "id: " + id.toString() + ", ssn: " + ssn + ", name: " + name
       + ", address: " + address + ", phone: " + phone;
   }
 }
