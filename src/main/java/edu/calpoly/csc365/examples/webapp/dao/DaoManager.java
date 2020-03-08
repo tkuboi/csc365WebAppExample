@@ -2,13 +2,9 @@ package edu.calpoly.csc365.examples.webapp.dao;
 
 import edu.calpoly.csc365.examples.webapp.entity.Customer;
 
-import javax.naming.NamingException;
 import javax.sql.DataSource;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Properties;
 
 public class DaoManager {
 
@@ -89,4 +85,7 @@ public class DaoManager {
     return new CustomerDaoImpl(this.getConnection());
   }
 
+  public UserDao getUserDao() throws SQLException {
+    return new UserDaoImpl(this.getConnection());
+  }
 }

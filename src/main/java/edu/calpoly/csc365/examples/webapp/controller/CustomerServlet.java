@@ -1,6 +1,6 @@
 package edu.calpoly.csc365.examples.webapp.controller;
 
-import edu.calpoly.csc365.examples.webapp.dao.ConnectionFactory;
+import edu.calpoly.csc365.examples.webapp.dao.DaoManagerFactory;
 import edu.calpoly.csc365.examples.webapp.dao.CustomerDaoImpl;
 import edu.calpoly.csc365.examples.webapp.dao.Dao;
 import edu.calpoly.csc365.examples.webapp.dao.DaoManager;
@@ -23,7 +23,7 @@ public class CustomerServlet extends HttpServlet {
   private Dao<Customer> customerDao;
 
   public CustomerServlet() throws Exception {
-    dm = ConnectionFactory.createDaoManager();
+    dm = DaoManagerFactory.createDaoManager();
     customerDao = dm.getCustomerDao();
   }
 

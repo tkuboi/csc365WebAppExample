@@ -2,10 +2,7 @@ package edu.calpoly.csc365.examples.webapp.dao;
 
 import edu.calpoly.csc365.examples.webapp.entity.Customer;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -75,14 +72,51 @@ public class CustomerDaoImpl implements Dao<Customer> {
   }
 
   @Override
-  public Boolean insert(Customer obj) {
-    return null;
+  public Integer insert(Customer obj) {
+    Integer id = null;
+    PreparedStatement preparedStatement = null;
+    ResultSet resultSet = null;
+    try {
+      preparedStatement = this.conn.prepareStatement(
+        "INSERT INTO Customer (ssn, name, address, phone) VALUES (?, ?, ?, ?)",
+        Statement.RETURN_GENERATED_KEYS);
+      preparedStatement.setString(1, obj.getSsn());
+      preparedStatement.setString(2, obj.getName());
+      preparedStatement.setString(3, obj.getAddress());
+      preparedStatement.setString(4, obj.getPhone());
+      int numRows = preparedStatement.executeUpdate();
+      if (numRows == 1) {
+        // get generated id
+        resultSet = preparedStatement.getGeneratedKeys();
+        if(resultSet.next())
+          id = resultSet.getInt(1);
+
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } finally {
+      try {
+        if (resultSet != null)
+          resultSet.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+      try {
+        if (preparedStatement != null)
+          preparedStatement.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    return id;
   }
 
   @Override
-  public Boolean update(Customer obj) {
+  public Integer update(Customer obj) {
+    Integer numRows = 0;
+    PreparedStatement preparedStatement = null;
     try {
-      PreparedStatement preparedStatement = this.conn.prepareStatement(
+      preparedStatement = this.conn.prepareStatement(
         "UPDATE Customer SET ssn=?, name=?, address=?, phone=? WHERE id=?");
       preparedStatement.setString(1, obj.getSsn());
       preparedStatement.setString(2, obj.getName());
@@ -92,14 +126,37 @@ public class CustomerDaoImpl implements Dao<Customer> {
       preparedStatement.execute();
     } catch (SQLException e) {
       e.printStackTrace();
-      return false;
+      return numRows;
+    } finally{
+      try {
+        if (preparedStatement != null)
+          preparedStatement.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
     }
-    return true;
+    return numRows;
   }
 
   @Override
-  public Boolean delete(Customer obj) {
-    return null;
+  public Integer delete(Customer obj) {
+    Integer numRows = null;
+    PreparedStatement preparedStatement = null;
+    try {
+      preparedStatement = this.conn.prepareStatement("DELETE FROM Customer WHERE id = ?");
+      preparedStatement.setInt(1, obj.getId());
+      numRows = preparedStatement.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } finally{
+      try {
+        if (preparedStatement != null)
+          preparedStatement.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    return numRows;
   }
 
   private Set<Customer> unpackResultSet(ResultSet rs) throws SQLException {
@@ -115,10 +172,5 @@ public class CustomerDaoImpl implements Dao<Customer> {
       customers.add(customer);
     }
     return customers;
-  }
-
-  @Override
-  protected void finalize() throws Throwable {
-    super.finalize();
   }
 }
