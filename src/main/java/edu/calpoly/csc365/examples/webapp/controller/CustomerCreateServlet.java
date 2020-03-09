@@ -4,6 +4,7 @@ import edu.calpoly.csc365.examples.webapp.dao.Dao;
 import edu.calpoly.csc365.examples.webapp.dao.DaoManager;
 import edu.calpoly.csc365.examples.webapp.dao.DaoManagerFactory;
 import edu.calpoly.csc365.examples.webapp.entity.Customer;
+import edu.calpoly.csc365.examples.webapp.service.AuthenticationService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,7 +26,13 @@ public class CustomerCreateServlet extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    request.getRequestDispatcher("customer_create.jsp").forward(request, response);
+    Cookie loginCookie = AuthenticationService.getLoginCookie(request);
+    if (loginCookie == null) {
+      response.sendRedirect("login");
+    } else {
+      response.addCookie(loginCookie);
+      request.getRequestDispatcher("customer_create.jsp").forward(request, response);
+    }
   }
 
   @Override
